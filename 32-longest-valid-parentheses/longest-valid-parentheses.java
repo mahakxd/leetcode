@@ -1,40 +1,28 @@
 class Solution {
-    // TC : O(n)
-    // SC : O(n)
     public int longestValidParentheses(String s) {
-        if(s==null || s.length()<2){
-            return 0;
-        }
-
-        Stack<Integer> st =new Stack<>();
-
+        int l=0,r=0;
+        int ans=0;
         for(int i=0;i<s.length();i++){
-            if(s.charAt(i) == '('){
-                st.push(i);
-            } else{
-
-                // current closing bracket
-
-                if(!st.empty() && s.charAt(st.peek()) == '('){
-                    // balanced case
-                    st.pop();
-                } else {
-                    // unbalanced case
-                    st.push(i);
-                }
+            if(s.charAt(i)=='(') l++;
+            else r++;
+            if(l==r){
+                ans=Math.max(ans,l+r);
+            }
+            else if(r>l){
+                l=r=0;
             }
         }
-     
-        int maxLen = 0;
-        int endTerminal = s.length();
-
-        while(!st.empty()){
-            int startTerminal  = st.pop();
-            maxLen = Math.max(maxLen, endTerminal - startTerminal -1);
-            endTerminal = startTerminal;
+        l=r=0;
+        for(int i=s.length()-1;i>=0;i--){
+            if(s.charAt(i)=='(') l++;
+            else r++;
+            if(l==r){
+                ans=Math.max(ans,l+r);
+            }
+            else if(l>r){
+                l=r=0;
+            }
         }
-
-        return Math.max(endTerminal, maxLen);
-        
+        return ans;
     }
 }
