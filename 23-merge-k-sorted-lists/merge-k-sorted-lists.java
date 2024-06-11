@@ -1,35 +1,39 @@
-/**
- * Definition for singly-linked list.
- * public class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode() {}
- *     ListNode(int val) { this.val = val; }
- *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
- * }
- */
 class Solution {
-    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
-        if (l1 == null) {
-            return l2;
-        }
-        if (l2 == null) {
-            return l1;
-        }
-        if (l1.val < l2.val) {
-            l1.next = mergeTwoLists(l1.next, l2);
-            return l1;
-        } else {
-            l2.next = mergeTwoLists(l1, l2.next);
-            return l2;
-        }
-    }
-
     public ListNode mergeKLists(ListNode[] lists) {
-        ListNode ans = null;
-        for (int i = 0; i < lists.length; i++) {
-            ans = mergeTwoLists(ans, lists[i]);
+        ListNode head = new ListNode();
+        ListNode cur = head;
+        
+        ListNode minNode = null;
+        boolean isAllNull = true;
+        int minIndex = 0;
+        
+        while(true) {
+            // traverse the lists, find the min node;
+            for (int i = 0; i < lists.length; i++) {
+                ListNode node = lists[i];
+                
+                // this is our while loop stop condition, if we find at least 1 node is not null isAllNull=false;
+                if (node == null) continue;
+                isAllNull = false;
+                
+                // checking min
+                if (minNode == null || node.val < minNode.val) {
+                    minNode = node;
+                    minIndex = i;
+                }
+            }
+            
+            if (isAllNull) break; // check the stop condition
+            
+            // add min node to cur node, shift the min node in the lists
+            lists[minIndex] = lists[minIndex].next;
+            cur.next = minNode;
+            cur = cur.next;
+            
+            minNode = null; // reset min node
+            isAllNull = true; // reset the stop condition
         }
-        return ans;
+        
+        return head.next;
     }
 }
