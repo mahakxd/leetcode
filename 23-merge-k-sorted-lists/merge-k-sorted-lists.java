@@ -8,37 +8,28 @@
  *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
  * }
  */
-public class Solution {
+class Solution {
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+        if (l1 == null) {
+            return l2;
+        }
+        if (l2 == null) {
+            return l1;
+        }
+        if (l1.val < l2.val) {
+            l1.next = mergeTwoLists(l1.next, l2);
+            return l1;
+        } else {
+            l2.next = mergeTwoLists(l1, l2.next);
+            return l2;
+        }
+    }
+
     public ListNode mergeKLists(ListNode[] lists) {
-        HashMap<Integer, Integer> map = new HashMap<>();
-        PriorityQueue<Integer> pq = new PriorityQueue<>();
-
-        for(ListNode head : lists) {
-            while(head != null) {
-                pq.add(head.val);
-                map.put(head.val, map.getOrDefault(head.val, 0) + 1);
-                head = head.next;
-            }
+        ListNode ans = null;
+        for (int i = 0; i < lists.length; i++) {
+            ans = mergeTwoLists(ans, lists[i]);
         }
-        
-        ListNode dummy = new ListNode(-1);
-        ListNode current = dummy;
-        while(!pq.isEmpty()) {
-            int val = pq.poll();
-            ListNode newNode = new ListNode(val);
-            current.next = newNode;
-            current = current.next;
-        
-            Integer count = map.get(val);
-            if (count != null && count > 0) {
-                map.put(val, count - 1);
-            } else {
-                map.remove(val); 
-            }
-
-            
-        }
-        
-        return dummy.next; 
+        return ans;
     }
 }
