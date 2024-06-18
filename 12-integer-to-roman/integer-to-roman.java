@@ -1,26 +1,59 @@
 class Solution {
     public String intToRoman(int num) {
-        TreeMap<Integer, String> map = new TreeMap<>();
-        map.put(1, "I");
-        map.put(4, "IV");
-        map.put(5, "V");
-        map.put(9, "IX");
-        map.put(10, "X");
-        map.put(40, "XL");
-        map.put(50, "L");
-        map.put(90, "XC");
-        map.put(100, "C");
-        map.put(400, "CD");
-        map.put(500, "D");
-        map.put(900, "CM");
-        map.put(1000, "M");
-        
-        StringBuilder result = new StringBuilder();
-        while (num > 0) {
-            Map.Entry<Integer, String> entry = map.floorEntry(num);
-            result.append(entry.getValue());
-            num -= entry.getKey();
+        String romanNumeral = "";
+        while (num >= 1000) {
+            romanNumeral += "M";
+            num -= 1000;
         }
-        return result.toString();
+        while (num >= 900) {
+            romanNumeral += "CM";
+            num -= 900;
+        }
+        while (num >= 500) {
+            romanNumeral += "D";
+            num -= 500;
+        }
+        while (num >= 400) {
+            romanNumeral += "CD";
+            num -= 400;
+        }
+        while (num >= 100) {
+            romanNumeral += "C";
+            num -= 100;
+        }
+        while (num >= 90) {
+            romanNumeral += "XC";
+            num -= 90;
+        }
+        while (num >= 50) {
+            romanNumeral += "L";
+            num -= 50;
+        }
+        while (num >= 40) {
+            romanNumeral += "XL";
+            num -= 40;
+        }
+        while (num >= 10) {
+            romanNumeral += "X";
+            num -= 10;
+        }
+        while (num >= 9) {
+            romanNumeral += "IX";
+            num -= 9;
+        }
+        while (num >= 5) {
+            romanNumeral += "V";
+            num -= 5;
+        }
+        while (num >= 4) {
+            romanNumeral += "IV";
+            num -= 4;
+        }
+        while (num >= 1) {
+            romanNumeral += "I";
+            num -= 1;
+        }
+
+        return romanNumeral;
     }
 }
