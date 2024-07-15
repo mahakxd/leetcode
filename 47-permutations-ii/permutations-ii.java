@@ -1,31 +1,22 @@
 class Solution {
-
-    static List<List<Integer>> ans;
-    static void swap(int arr[], int i, int j){
-        int a = arr[i];
-        arr[i] = arr[j];
-        arr[j] = a;
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        List<List<Integer>> list = new ArrayList<>();
+        Arrays.sort(nums);
+        backtrack(list, new ArrayList<>(), nums, new boolean[nums.length]);
+        return list;
     }
-
-    static void helper(int arr[], int idx){
-        if(idx==arr.length-1){
-            ans.add(Arrays.stream(arr).boxed().toList());
-            return;
+    private void backtrack(List<List<Integer>> list, List<Integer> tempList, int[] nums, boolean[] used) {
+        if (tempList.size() == nums.length) {
+            list.add(new ArrayList<>(tempList));
+        } else {
+            for (int i = 0; i < nums.length; i++) {
+                if (used[i] || i > 0 && nums[i] == nums[i - 1] && !used[i - 1])  continue;
+                used[i] = true;
+                tempList.add(nums[i]);
+                backtrack(list, tempList, nums, used);
+                used[i] = false;
+                tempList.remove(tempList.size() - 1);
+            }
         }
-
-        HashSet<Integer> hp = new HashSet<>();
-        for(int i=idx; i<arr.length; i++){
-            if(hp.contains(arr[i])) continue;
-            hp.add(arr[i]);
-            swap(arr,i,idx);
-            helper(arr,idx+1);
-            swap(arr,i,idx);
-        }
-        
-    }
-    public List<List<Integer>> permuteUnique(int[] arr) {
-        ans = new ArrayList<>();
-        helper(arr,0);
-        return ans;
     }
 }
