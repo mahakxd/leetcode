@@ -1,31 +1,24 @@
 class Solution {
-    private void transpose(int[][] matrix) {
-        for(int i=0; i<matrix.length; i++) {
-            for(int j=i; j<matrix[0].length; j++) {
-                int temp = matrix[i][j];
-                matrix[i][j] = matrix[j][i];
-                matrix[j][i] = temp;
-            }
-        }
-    }
-    private void reverseRows(int[][] matrix) {
-        for(int r=0; r<matrix.length; r++) {
-            int left = 0;
-            int right = matrix.length-1;
-
-            while(left < right) {
-                int temp = matrix[r][left];
-                matrix[r][left] = matrix[r][right];
-                matrix[r][right] = temp;
-
-                left++;
-                right--;
-            }
-        }
-
-    }
     public void rotate(int[][] matrix) {
-        transpose(matrix);
-        reverseRows(matrix);
+        int n = matrix.length;
+
+        for (int row = 0; row < n / 2; row++) {
+            for (int col = row; col < n - row - 1; col++) {
+                // Swap the top-left and top-right cells in the current group
+                int temp = matrix[row][col];
+                matrix[row][col] = matrix[col][n - 1 - row];
+                matrix[col][n - 1 - row] = temp;
+
+                // Swap the top-left and bottom-right cells in the current group
+                temp = matrix[row][col];
+                matrix[row][col] = matrix[n - 1 - row][n - 1 - col];
+                matrix[n - 1 - row][n - 1 - col] = temp;
+
+                // Swap the top-left and bottom-left cells in the current group
+                temp = matrix[row][col];
+                matrix[row][col] = matrix[n - 1 - col][row];
+                matrix[n - 1 - col][row] = temp;
+            }
+        }
     }
 }
